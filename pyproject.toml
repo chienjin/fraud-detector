@@ -7,7 +7,9 @@ authors = [
     { name = "chien yi jin", email = "cyj000615@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "requests>=2.34.2",
+]
 
 [project.scripts]
 fraud-detector = "fraud_detector:main"
