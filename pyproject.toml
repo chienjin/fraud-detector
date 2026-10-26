@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-fraud-detector = "fraud_detector:main"
+fraud-detector = "fraud_detector.main:main"
 
 [build-system]
 requires = ["uv_build>=0.13.0,<0.14.0"]
