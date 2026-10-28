@@ -1,7 +1,7 @@
 import pytest
 
 from fraud_detector.domain.models import RiskLevel
-from fraud_detector.domain.scoring import assess_risk,risk_score
+from fraud_detector.domain.scoring import assess_risk, risk_score
 
 
 @pytest.mark.parametrize(
@@ -19,14 +19,15 @@ def test_assess_risk(
 ) -> None:
     assert assess_risk(post_text, suspicious_keyword_count) == expected
 
+
 @pytest.mark.parametrize(
     ("reasons", "expected"),
     [
         (None, 0),
         ([], 0),
         (["aa"], 10),
-        (["aa","aaa","aaaa"], 30),
+        (["aa", "aaa", "aaaa"], 30),
     ],
 )
-def test_risk_score(reasons:list[str], expected: int) -> None:
-     assert risk_score(reasons) == expected
+def test_risk_score(reasons: list[str], expected: int) -> None:
+    assert risk_score(reasons) == expected
