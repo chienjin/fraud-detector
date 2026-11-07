@@ -4,6 +4,7 @@ from fraud_detector.domain.models import AnalysisResult, Post, RiskLevel
 from fraud_detector.services.analysis import run_analysis
 from fraud_detector.services.ports import TextAnalyzer
 
+
 class FakeAnalyzer:
     def __init__(self, result: AnalysisResult) -> None:
         self.result = result
