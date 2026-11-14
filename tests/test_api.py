@@ -76,4 +76,4 @@ def test_analyzer_errors_are_translated_to_http_status(
     response = TestClient(app).post("/analyses", json={"text": "保證獲利"})
 
     assert response.status_code == status_code
-    assert response.json() == {"detail": detail}
+    assert response.json() == {"detail": detail
