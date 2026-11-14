@@ -7,12 +7,13 @@ from fraud_detector.domain.models import AnalysisResult, RiskLevel
 def parse_llm_response(raw: str, post_id: str) -> AnalysisResult:
     try:
         data = json.loads(raw)
-    except json.JSONDecodeError as e:
-        raise AnalysisFailedError(f"LLM 回傳的格式不是合法的 JSON post_id={post_id}") from e
-
-    return AnalysisResult(
-        post_id,
-        RiskLevel(data["risk_level"]),
-        data["reasons"],
-        data["confidence"],  # 從 data 取出 risk_level、reasons、confidence，建立 AnalysisResult
-    )
+        return AnalysisResult(
+            post_id=post_id,
+            risk_level=RiskLevel(data["risk_level"]),
+            reasons=data["reasons"],
+            confidence=data[
+                "confidence"
+            ],  # 從 data 取出 risk_level、reasons、confidence，建立 AnalysisResult
+        )
+    except (KeyError, TypeError, ValueError) as e:
+        raise AnalysisFailedError(f"無法解析 LLM 的回傳內容 post_id={post_id}") from e

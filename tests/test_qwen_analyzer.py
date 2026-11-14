@@ -29,3 +29,21 @@ def test_broken_json_keeps_original_cause() -> None:
         parse_llm_response(BROKEN_RESPONSE, post_id="p1")
 
     assert isinstance(exc_info.value.__cause__, json.JSONDecodeError)
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected_cause"),
+    [
+        ("not json", json.JSONDecodeError),
+        ('{"risk_level": "low", "confidence": 0.5}', KeyError),
+        ('{"risk_level": "extreme", "reasons": ["a"], "confidence": 0.5}', ValueError),
+        ('{"risk_level": "low", "reasons": ["a"], "confidence": 1.5}', ValueError),
+    ],
+)
+def test_invalid_response_raises_analysis_failed_error(
+    raw: str, expected_cause: type[Exception]
+) -> None:
+    with pytest.raises(AnalysisFailedError) as exc_info:
+        parse_llm_response(raw, post_id="p1")
+
+    assert type(exc_info.value.__cause__) is expected_cause
