@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [main]          # push 到 main 時執行
+  pull_request:               # 開 PR 或更新 PR 時執行
+
+jobs:
+  check:
+    runs-on: ubuntu-latest    # 用 GitHub 提供的 Ubuntu 電腦
+    steps:
+      - uses: actions/checkout@v4          # ① 下載你的程式碼
+      - uses: astral-sh/setup-uv@v6        # ② 安裝 uv
+        with:
+          python-version: "3.14"
+      - run: uv sync --locked              # ③ 依照 uv.lock 安裝套件
+      - run: uv run ruff format --check .  # ④ 檢查格式
+      - run: uv run ruff check .           # ⑤ lint
+      - run: uv run mypy src tests         # ⑥ 型別檢查
+      - run: uv run pytest                 # ⑦ 測試
